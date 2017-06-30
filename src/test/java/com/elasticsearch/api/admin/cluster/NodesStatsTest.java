@@ -1,0 +1,25 @@
+package com.elasticsearch.api.admin.cluster;
+
+import org.elasticsearch.action.admin.cluster.node.stats.NodeStats;
+import org.elasticsearch.action.admin.cluster.node.stats.NodesStatsResponse;
+import org.elasticsearch.client.Client;
+import org.junit.Test;
+
+import com.elasticsearch.api.AbstractApi;
+
+public class NodesStatsTest extends AbstractApi {
+
+	//节点统计api
+	@Test
+	public void test() {
+		Client client = getClient();
+		NodesStatsResponse response = client.admin().cluster()
+				.prepareNodesStats()
+				.all()
+				.execute().actionGet();
+
+		for (NodeStats node : response.getNodes()) {
+			System.out.println("Doc count: " + node.getIndices().getDocs().getCount());
+		}
+	}
+}
